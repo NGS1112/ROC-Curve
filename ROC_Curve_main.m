@@ -5,15 +5,11 @@
 %           Principles of Data Mining.
 
 function ROC_Curve_main(filename)
-%ROC_Curve_main: function to find best one-rule of a 
-%                dataset for classification and create 
-%                a generated program for classifying data.
+%ROC_Curve_main: function to generate an ROC curve for a given dataset
+%                by comparing thresholds against their respective false 
+%                positive and true positive rates
 %
-%Arguments: filename - File to be used as input building one-rule & program
-%           mode     - Optional mode of operation. Can be left blank to
-%                      print one-rule, set to 'show' to display graphs, set to
-%                      'create' to generate a subprogram, or set to 'all' to do every
-%                      option.
+%Arguments: filename - data file to be used to generate the ROC curve
 
 %Reads the data from the training file
 matrixedData = readmatrix(filename);
