@@ -1,0 +1,72 @@
+%File:      HW03_Shinn_Nicholas_mentor
+%Author:    Nicholas Shinn
+%Date:      03/03/2022
+%Details:   Program to perform the features discussed in EX03 of 
+%           Principles of Data Mining.
+
+function ROC_curve_main(filename)
+%ROC_curve_main: function to find best one-rule of a 
+%                dataset for classification and create 
+%                a generated program for classifying data.
+%
+%Arguments: filename - File to be used as input building one-rule & program
+%           mode     - Optional mode of operation. Can be left blank to
+%                      print one-rule, set to 'show' to display graphs, set to
+%                      'create' to generate a subprogram, or set to 'all' to do every
+%                      option.
+
+%Reads the data from the training file
+matrixedData = readmatrix(filename);
+
+for index = 1:6
+    values = matrixedData( :, [index 9]);
+    normalized_values = (round(values( :, 1) / 2) * 2)';
+    
+    best_threshold = Inf;
+    best_rate = -Inf;
+    best_false_rate = Inf;
+    best_true_rate = -Inf;
+    false_positive_rates = [];
+    true_positive_rates = [];
+    
+    for threshold = normalized_values
+        %Seperate the data entries into left and right groups based on
+        %threshold
+        left = values( values(:, 1) <= threshold, :);
+        right = values( values(:, 1) > threshold, : );
+        
+        false_positives = sum(left(:, 2) == 1);
+        false_positive_rate = sum(false_positives./sum(values(:, 2) == 1));
+        false_positive_rates(end+1) = false_positive_rate;
+        
+        true_positives = sum(left(:, 2) == -1);
+        true_positive_rate = sum(true_positives./sum(values(:, 2) == -1));
+        true_positive_rates(end+1) = true_positive_rate;
+        
+        
+        if( false_positive_rate <= best_false_rate && true_positive_rate >= best_true_rate )
+            best_false_rate = false_positive_rate;
+            best_true_rate = true_positive_rate;
+            best_threshold = threshold;
+        end
+    
+    end
+    %Create the base figure, displaying feature threshold False Alarm
+    %Rate versus True Positive Rate
+    [false_positive_rates, sorted_order] = sort(false_positive_rates);
+    true_positive_rates = true_positive_rates(sorted_order);
+    figure(index);
+    plot(false_positive_rates, true_positive_rates, '--or');
+    %Insert the calculated best threshold, marking it for visibility
+    hold on;
+    plot(best_false_rate, best_true_rate, '--wd');
+    set(gca, 'color', 'k');
+    hold off;
+    %Sets up the legend and labels
+    legend('\color{red} Feature Thresholds', '\color{white} Best Feature Threshold', 'Location', 'southeast');
+    xlabel('False Positive Rate');
+    ylabel('True Positive Rate');
+    title('Rates at Different Thresholds');
+end
+end
+
