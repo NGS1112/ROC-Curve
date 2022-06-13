@@ -1,11 +1,11 @@
-%File:      HW03_Shinn_Nicholas_mentor
+%File:      ROC_Curve_main.m
 %Author:    Nicholas Shinn
 %Date:      03/03/2022
 %Details:   Program to perform the features discussed in EX03 of 
 %           Principles of Data Mining.
 
-function ROC_curve_main(filename)
-%ROC_curve_main: function to find best one-rule of a 
+function ROC_Curve_main(filename)
+%ROC_Curve_main: function to find best one-rule of a 
 %                dataset for classification and create 
 %                a generated program for classifying data.
 %
